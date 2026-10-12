@@ -1,0 +1,26 @@
+{
+  "name": "@prize-map/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun run build.ts",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "dev": "bun run build.ts && bun run src/server.ts",
+    "lint": "eslint src build.ts",
+    "start": "bun run src/server.ts",
+    "test": "bun test --pass-with-no-tests"
+  },
+  "dependencies": {
+    "@prize-map/content-data": "workspace:*",
+    "@prize-map/types": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

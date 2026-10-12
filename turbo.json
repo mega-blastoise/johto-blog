@@ -1,0 +1,39 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "cacheDir": ".turbo/cache",
+  "envMode": "strict",
+  "globalDependencies": [".env", ".env.local"],
+  "noUpdateNotifier": true,
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "!.turbo/**"],
+      "outputs": ["dist/**"]
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "env": ["PORT"],
+      "persistent": true,
+      "cache": false
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "//#lint:root": {
+      "inputs": ["eslint.config.js", "scripts/**"]
+    },
+    "start": {
+      "dependsOn": ["^start"],
+      "env": ["PORT"],
+      "persistent": true,
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    }
+  }
+}

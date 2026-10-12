@@ -1,0 +1,1 @@
+export { FormatBrief } from "./Component";
