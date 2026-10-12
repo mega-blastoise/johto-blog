@@ -1,1 +1,1 @@
-export { FilterBar } from "./Component";
+export { default as FilterBar } from "./Component";

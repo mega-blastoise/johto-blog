@@ -87,6 +87,23 @@ input {
   width: 1px;
 }
 
+.skip-link {
+  background: var(--yellow);
+  color: #131920;
+  font-weight: 700;
+  left: 18px;
+  padding: 10px 14px;
+  position: fixed;
+  top: 12px;
+  transform: translateY(-200%);
+  transition: transform 160ms ease;
+  z-index: 2;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .site-shell {
   margin: 0 auto;
   max-width: 1280px;
@@ -411,6 +428,7 @@ input {
   margin-bottom: 28px;
 }
 
+.section-heading h1,
 .section-heading h2 {
   font-family: var(--serif);
   font-size: clamp(35px, 4vw, 55px);
@@ -435,6 +453,18 @@ input {
   letter-spacing: 0.03em;
   margin: 0 0 4px;
   text-align: right;
+}
+
+.section-heading__description {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 14px 0 0;
+  max-width: 550px;
+}
+
+.home-recent {
+  margin-top: 72px;
 }
 
 .filter-bar {
@@ -634,6 +664,37 @@ input {
   margin: 14px 0 0;
   padding: 34px;
   text-align: center;
+}
+
+.query-loader {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-family: var(--mono);
+  font-size: 11px;
+  gap: 10px;
+  min-height: 280px;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.query-loader__signal {
+  animation: query-pulse 900ms ease-in-out infinite alternate;
+  background: var(--mint);
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.error-state .hero__actions {
+  margin-top: 28px;
+}
+
+@keyframes query-pulse {
+  to {
+    box-shadow: 0 0 0 7px rgba(94, 224, 180, 0.16);
+  }
 }
 
 .page-intro {
@@ -865,6 +926,23 @@ input {
   padding: 27px 0 34px;
 }
 
+.site-footer div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.site-footer strong {
+  color: var(--soft);
+  font-weight: 500;
+}
+
+.site-footer p {
+  margin: 0;
+  max-width: 510px;
+  text-align: right;
+}
+
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
@@ -987,5 +1065,9 @@ input {
     align-items: flex-start;
     flex-direction: column;
     gap: 10px;
+  }
+
+  .site-footer p {
+    text-align: left;
   }
 }

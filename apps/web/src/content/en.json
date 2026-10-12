@@ -1,0 +1,146 @@
+{
+  "site": {
+    "name": "Prize Map",
+    "mark": "PM",
+    "brandAriaLabel": "Prize Map home",
+    "descriptor": "Competitive Pokémon TCG",
+    "skipToContent": "Skip to content",
+    "navigationLabel": "Primary navigation",
+    "navigation": [
+      { "href": "/", "label": "Home" },
+      { "href": "/posts/", "label": "Journal" },
+      { "href": "/field/", "label": "Field Notes" },
+      { "href": "/about/", "label": "Protocol" }
+    ],
+    "footerTitle": "Prize Map · Competitive Pokémon TCG",
+    "footerTagline": "Notes for the next round.",
+    "disclaimer": "Pokémon and Pokémon Trading Card Game are trademarks of their respective owners. Prize Map is an independent fan publication."
+  },
+  "meta": {
+    "homeTitle": "Prize Map · Competitive Pokémon TCG",
+    "homeDescription": "Deck reports, matchup plans, and format reads for competitive Pokémon Trading Card Game players.",
+    "postsTitle": "Journal · Prize Map",
+    "postsDescription": "Versioned deck reports and source-aware format reads for competitive Pokémon TCG players.",
+    "fieldTitle": "Field Notes · Prize Map",
+    "fieldDescription": "Timestamped competitive Pokémon TCG metagame reads and deck-selection implications.",
+    "protocolTitle": "The Prize Map Protocol",
+    "protocolDescription": "How Prize Map keeps competitive Pokémon TCG notes useful after the event."
+  },
+  "common": {
+    "readNote": "Read note",
+    "backToJournal": "Journal",
+    "permanentLink": "Permanent link",
+    "updated": "Updated {date}",
+    "published": "Published: {date}",
+    "format": "Format: {format}",
+    "version": "Version: {version}",
+    "filedUnder": "Filed under",
+    "loading": "Loading the next note…",
+    "retry": "Try again",
+    "errorEyebrow": "Read interrupted",
+    "errorTitle": "The field report could not load.",
+    "errorDescription": "The content is still intact. Reload this view or return to the journal."
+  },
+  "articleKinds": {
+    "deck-report": "Deck report",
+    "meta-brief": "Meta brief",
+    "tournament-log": "Tournament log",
+    "tech-note": "Tech note",
+    "process": "Process"
+  },
+  "formats": {
+    "standard": "Standard",
+    "expanded": "Expanded",
+    "mixed": "Mixed"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Competitive Pokémon TCG journal",
+      "titleFirstLine": "Better notes.",
+      "titleSecondLine": "Cleaner decisions.",
+      "description": "A tightly kept record of deck versions, matchup plans, and format reads for players who want their testing to survive contact with a tournament room.",
+      "journalCta": "Read the journal",
+      "protocolCta": "The protocol",
+      "standardLabel": "Every post carries",
+      "standard": ["A format boundary", "A versioned decision", "A next test"],
+      "standardFootnote": "Play the room, not the hype."
+    },
+    "brief": {
+      "eyebrow": "Format intelligence",
+      "title": "Your field read should have an expiry date.",
+      "description": "Prize Map keeps the source window, confidence, and next test visible—so a strong result never disguises a stale conclusion.",
+      "latestLabel": "Latest editorial framework · {date}",
+      "checklist": ["Format boundary", "Event evidence", "Deck decision"]
+    },
+    "featured": {
+      "eyebrow": "Selected notes",
+      "title": "Decks, field reads, and the decisions behind them.",
+      "archiveCta": "Browse every note",
+      "recentTitle": "Recent notes"
+    }
+  },
+  "posts": {
+    "eyebrow": "The journal",
+    "title": "Decks, field reads, and the decisions behind them.",
+    "description": "A searchable archive of versioned reports and source-aware format reads.",
+    "searchLabel": "Search notes",
+    "searchPlaceholder": "Search notes",
+    "filterLabel": "Filter posts by type",
+    "allKinds": "All",
+    "archiveDetail": "{count} authored notes · markdown-first · versioned",
+    "emptyState": "No notes match that field read. Reset the filters and try another term."
+  },
+  "article": {
+    "relatedEyebrow": "Keep preparing",
+    "relatedTitle": "Related notes",
+    "build": "Build",
+    "deckContextLabel": "Deck report context",
+    "formatLabel": "Format",
+    "window": "Window"
+  },
+  "field": {
+    "eyebrow": "Field notes",
+    "title": "A format read is a timestamped argument.",
+    "description": "This page is reserved for live, source-backed meta snapshots. The starter workspace deliberately makes no unverified claim about today’s Standard field—competitive information needs a source window before it needs a hot take.",
+    "steps": [
+      {
+        "title": "Snapshot",
+        "description": "Record the format, events observed, sample window, and update date."
+      },
+      {
+        "title": "Read",
+        "description": "Separate results you saw from the decision you infer from them."
+      },
+      {
+        "title": "Action",
+        "description": "End with the deck, tech, or matchup test the field read changes."
+      }
+    ],
+    "templateCta": "Open the meta brief template"
+  },
+  "protocol": {
+    "eyebrow": "The protocol",
+    "title": "Make a competitive journal that remains useful after the event.",
+    "description": "Prize Map is a static, Markdown-authored publishing system for a serious Pokémon Trading Card Game player. It is built to preserve list versions, timestamp metagame observations, and turn testing into advice that can be checked later.",
+    "principles": [
+      {
+        "title": "Own the source.",
+        "description": "Posts live as validated Markdown in the repository, not as opaque CMS records."
+      },
+      {
+        "title": "Keep the conditions.",
+        "description": "Format, date, deck version, and confidence are first-class editorial context."
+      },
+      {
+        "title": "Publish the next decision.",
+        "description": "The value is what you will test, play, or cut next—not a retrospective victory lap."
+      }
+    ]
+  },
+  "notFound": {
+    "eyebrow": "404 · Missed the line",
+    "title": "That note is not in this deck.",
+    "description": "It may have moved, or it has not been published yet.",
+    "cta": "Back to the journal"
+  }
+}

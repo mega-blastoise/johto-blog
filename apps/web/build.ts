@@ -1,6 +1,8 @@
 import { posts } from "@prize-map/content-data";
 import { mkdir } from "node:fs/promises";
 
+import copy from "./src/content/en.json";
+
 const applicationDirectory = import.meta.dir;
 const outputDirectory = `${applicationDirectory}/dist`;
 
@@ -15,40 +17,49 @@ function metadataFor(route: string): PageMetadata {
 
   if (article) {
     return {
-      title: `${article.title} · Prize Map`,
+      title: `${article.title} · ${copy.site.name}`,
       description: article.excerpt,
+    };
+  }
+
+  if (route === "/posts/") {
+    return {
+      title: copy.meta.postsTitle,
+      description: copy.meta.postsDescription,
     };
   }
 
   if (route === "/field/") {
     return {
-      title: "Field Notes · Prize Map",
-      description:
-        "Timestamped competitive Pokémon TCG metagame reads and deck-selection implications.",
+      title: copy.meta.fieldTitle,
+      description: copy.meta.fieldDescription,
     };
   }
 
   if (route === "/about/") {
     return {
-      title: "The Prize Map Protocol",
-      description:
-        "How Prize Map keeps competitive Pokémon TCG notes useful after the event.",
+      title: copy.meta.protocolTitle,
+      description: copy.meta.protocolDescription,
     };
   }
 
   return {
-    title: "Prize Map · Competitive Pokémon TCG",
-    description:
-      "Deck reports, matchup plans, and format reads for competitive Pokémon Trading Card Game players.",
+    title: copy.meta.homeTitle,
+    description: copy.meta.homeDescription,
   };
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;");
 }
 
 function documentFor(route: string): string {
   const { description, title } = metadataFor(route);
-  const safeDescription = description
-    .replaceAll("&", "&amp;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("<", "&lt;");
+  const safeDescription = escapeHtml(description);
+  const safeTitle = escapeHtml(title);
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -56,7 +67,7 @@ function documentFor(route: string): string {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="${safeDescription}" />
     <meta name="theme-color" content="#0d1117" />
-    <title>${title}</title>
+    <title>${safeTitle}</title>
     <link rel="stylesheet" href="/app.css" />
   </head>
   <body>
@@ -76,7 +87,11 @@ async function build(): Promise<void> {
     target: "browser",
     format: "esm",
     minify: true,
-    naming: "app.[ext]",
+    naming: {
+      entry: "app.[ext]",
+      chunk: "chunks/[name]-[hash].[ext]",
+    },
+    splitting: true,
     sourcemap: "external",
   });
 
@@ -86,6 +101,7 @@ async function build(): Promise<void> {
 
   const routes = [
     "/",
+    "/posts/",
     "/field/",
     "/about/",
     ...posts.map((post) => `/posts/${post.slug}/`),

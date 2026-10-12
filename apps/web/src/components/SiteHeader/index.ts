@@ -1,1 +1,1 @@
-export { SiteHeader } from "./Component";
+export { default as SiteHeader } from "./Component";

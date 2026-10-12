@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": ["../src/pages/Field.tsx", "../src/components/FieldNotes/Component.tsx", "../src/components/FieldNotes/View.tsx"],
+  "sourcesContent": [
+    "import { memo } from \"react\";\n\nimport { FieldNotes } from \"@/components/FieldNotes\";\nimport { pipeline } from \"@/utils/pipeline\";\n\nfunction FieldPage() {\n  return <FieldNotes />;\n}\n\nexport default pipeline(memo)(FieldPage);\n",
+    "import { memo } from \"react\";\n\nimport { pipeline } from \"@/utils/pipeline\";\n\nimport FieldNotesView from \"./View\";\n\nfunction FieldNotes() {\n  return <FieldNotesView />;\n}\n\nexport default pipeline(memo)(FieldNotes);\n",
+    "import { Link } from \"react-router\";\n\nimport copy from \"@/content/en.json\";\n\nfunction FieldNotesView() {\n  return (\n    <section className=\"page-intro\">\n      <p className=\"eyebrow\">{copy.field.eyebrow}</p>\n      <h1>{copy.field.title}</h1>\n      <p>{copy.field.description}</p>\n      <div className=\"field-notes__grid\">\n        {copy.field.steps.map((step, index) => (\n          <section key={step.title}>\n            <span>{String(index + 1).padStart(2, \"0\")}</span>\n            <h2>{step.title}</h2>\n            <p>{step.description}</p>\n          </section>\n        ))}\n      </div>\n      <Link className=\"button button--primary\" to=\"/posts/meta-brief-template/\">\n        {copy.field.templateCta} <span aria-hidden=\"true\">→</span>\n      </Link>\n    </section>\n  );\n}\n\nexport default FieldNotesView;\n"
+  ],
+  "mappings": "iHAAA,QCAA,8BCIA,SAAS,CAAc,EAAG,CACxB,OACE,SAgBE,UAhBF,CAAS,UAAU,aAAnB,SAgBE,CAfA,SAA6C,IAA7C,CAAG,UAAU,UAAb,SAAwB,EAAK,MAAM,SAAnC,qBAA6C,EAC7C,SAAwB,KAAxB,UAAK,EAAK,MAAM,OAAhB,qBAAwB,EACxB,SAA6B,IAA7B,UAAI,EAAK,MAAM,aAAf,qBAA6B,EAC7B,SAQE,MARF,CAAK,UAAU,oBAAf,SACG,EAAK,MAAM,MAAM,IAAI,CAAC,EAAM,IAC3B,SAIE,UAJF,UAIE,CAHA,SAA4C,OAA5C,UAAO,OAAO,EAAQ,CAAC,EAAE,SAAS,EAAG,GAAG,GAAxC,qBAA4C,EAC5C,SAAkB,KAAlB,UAAK,EAAK,OAAV,qBAAkB,EAClB,SAAuB,IAAvB,UAAI,EAAK,aAAT,qBAAuB,IAHX,EAAK,MAAnB,cAIE,CACH,GAPH,qBAQE,EACF,SAEE,EAFF,CAAM,UAAU,yBAAyB,GAAG,8BAA5C,SAEE,CADC,EAAK,MAAM,YADd,IAC2B,SAA2B,OAA3B,CAAM,cAAY,OAAlB,mCAA2B,IADtD,qBAEE,IAfJ,qBAgBE,EAIN,IAAe,mBDpBf,SAAS,CAAU,EAAG,CACpB,OAAO,SAAC,EAAD,wBAAgB,EAGzB,IAAe,IAAS,MAAI,EAAE,CAAU,iBDLxC,SAAS,CAAS,EAAG,CACnB,OAAO,SAAC,EAAD,wBAAY,EAGrB,IAAe,IAAS,MAAI,EAAE,CAAS",
+  "debugId": "94C6D2011D3B534764756E2164756E21",
+  "names": []
+}
