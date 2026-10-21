@@ -20,6 +20,10 @@ prize-map/
 
 Every package compiles to `dist/` and exports built JavaScript plus declarations. No consumer resolves package TypeScript source.
 
+## Production deployment
+
+The GitHub Actions release path deploys the built static artifact through private S3, CloudFront, and Route 53 using short-lived GitHub OIDC credentials. Follow the [AWS production deployment guide](docs/deployment.md) to provision the stack and activate the `production` GitHub Environment.
+
 ## Local development
 
 ```bash
