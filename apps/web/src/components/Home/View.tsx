@@ -1,6 +1,8 @@
 import { Link } from "react-router";
 
+import { sprites, starterSprites } from "@/assets/johto-gbc/sprites";
 import { ArticleCard } from "@/components/ArticleCard";
+import { DialogueBox } from "@/components/DialogueBox";
 import { FormatBrief } from "@/components/FormatBrief";
 import copy from "@/content/en.json";
 import { selectHomePosts } from "@/services/Posts";
@@ -21,7 +23,12 @@ function HomeView({ posts }: HomeViewProps) {
             <br />
             {copy.home.hero.titleSecondLine}
           </h1>
-          <p>{copy.home.hero.description}</p>
+          <DialogueBox
+            className="hero__dialogue"
+            speaker={copy.home.hero.speaker}
+          >
+            <p>{copy.home.hero.description}</p>
+          </DialogueBox>
           <div className="hero__actions">
             <a className="button button--primary" href="#journal">
               {copy.home.hero.journalCta} <span aria-hidden="true">↓</span>
@@ -32,13 +39,44 @@ function HomeView({ posts }: HomeViewProps) {
           </div>
         </div>
         <div className="hero__card" aria-label={copy.home.hero.standardLabel}>
+          <img
+            alt=""
+            aria-hidden="true"
+            className="hero__legend"
+            height={56}
+            src={sprites.hoOh}
+            width={56}
+          />
           <span className="hero__card-label">
             {copy.home.hero.standardLabel}
           </span>
           <ol>
             {copy.home.hero.standard.map((item, index) => (
               <li key={item}>
-                <span>{String(index + 1).padStart(2, "0")}</span> {item}
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  className="party-slot__sprite"
+                  height={56}
+                  src={starterSprites[index % starterSprites.length]}
+                  width={56}
+                />
+                <span className="party-slot__body">
+                  <span className="party-slot__name">
+                    <span className="party-slot__index">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>{" "}
+                    {item}
+                  </span>
+                  <span className="hp-bar" aria-hidden="true">
+                    <span className="hp-bar__label">
+                      {copy.home.hero.hpLabel}
+                    </span>
+                    <span className="hp-bar__track">
+                      <span className="hp-bar__fill" />
+                    </span>
+                  </span>
+                </span>
               </li>
             ))}
           </ol>
