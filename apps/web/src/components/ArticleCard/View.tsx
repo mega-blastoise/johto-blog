@@ -19,7 +19,9 @@ function ArticleCardView({ article, priority = false }: ArticleCardProps) {
       }
     >
       <div className="article-card__eyebrow">
-        <span className="type-pill">{articleKindLabel(article.kind)}</span>
+        <span className={`type-pill type-pill--${article.kind}`}>
+          {articleKindLabel(article.kind)}
+        </span>
         <time dateTime={article.updated}>
           {formatMessage(copy.common.updated, {
             date: formatArticleDate(article.updated),

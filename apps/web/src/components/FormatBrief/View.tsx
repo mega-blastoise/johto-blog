@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { sprites } from "@/assets/johto-gbc/sprites";
 import copy from "@/content/en.json";
 import { articlePath, formatArticleDate } from "@/utils/articlePresentation";
 import { formatMessage } from "@/utils/formatMessage";
@@ -10,8 +11,19 @@ function FormatBriefView({ latestBrief }: FormatBriefProps) {
   return (
     <aside className="format-brief" aria-labelledby="format-brief-title">
       <div className="format-brief__header">
-        <span className="signal-dot" aria-hidden="true" />
+        <span className="format-brief__device">
+          <span className="signal-dot" aria-hidden="true" />
+          {copy.home.brief.device}
+        </span>
         <p>{copy.home.brief.eyebrow}</p>
+        <img
+          alt=""
+          aria-hidden="true"
+          className="format-brief__sprite"
+          height={56}
+          src={sprites.lugia}
+          width={56}
+        />
       </div>
       <h2 id="format-brief-title">{copy.home.brief.title}</h2>
       <p className="format-brief__copy">{copy.home.brief.description}</p>

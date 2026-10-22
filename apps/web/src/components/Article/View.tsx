@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { ArticleCard } from "@/components/ArticleCard";
+import { DialogueBox } from "@/components/DialogueBox";
 import { NotFoundView } from "@/components/NotFound";
 import copy from "@/content/en.json";
 import {
@@ -25,7 +26,9 @@ function ArticleView({ article, relatedPosts }: ArticleViewProps) {
       </Link>
       <header className="article-detail__header">
         <div className="article-card__eyebrow">
-          <span className="type-pill">{articleKindLabel(article.kind)}</span>
+          <span className={`type-pill type-pill--${article.kind}`}>
+            {articleKindLabel(article.kind)}
+          </span>
           <time dateTime={article.updated}>
             {formatMessage(copy.common.updated, {
               date: formatArticleDate(article.updated),
@@ -33,7 +36,9 @@ function ArticleView({ article, relatedPosts }: ArticleViewProps) {
           </time>
         </div>
         <h1>{article.title}</h1>
-        <p className="article-detail__deck">{article.excerpt}</p>
+        <DialogueBox className="article-detail__deck">
+          <p>{article.excerpt}</p>
+        </DialogueBox>
         <div className="article-detail__metadata">
           <span>
             {formatMessage(copy.common.format, {

@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { sprites } from "@/assets/johto-gbc/sprites";
 import copy from "@/content/en.json";
 import { isPathActive } from "@/utils/route";
 
@@ -10,7 +11,7 @@ function SiteHeaderView({ pathname }: SiteHeaderViewProps) {
     <header className="site-header">
       <Link aria-label={copy.site.brandAriaLabel} className="brand" to="/">
         <span className="brand-mark" aria-hidden="true">
-          {copy.site.mark}
+          <img alt="" height={32} src={sprites.pokeBall} width={32} />
         </span>
         <span>
           <span className="brand-name">{copy.site.name}</span>

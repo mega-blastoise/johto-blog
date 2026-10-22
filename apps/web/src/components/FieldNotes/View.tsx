@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { UnownWord } from "@/components/UnownWord";
 import copy from "@/content/en.json";
 
 function FieldNotesView() {
@@ -11,6 +12,7 @@ function FieldNotesView() {
       <div className="field-notes__grid">
         {copy.field.steps.map((step, index) => (
           <section key={step.title}>
+            <UnownWord word={step.title.charAt(0)} />
             <span>{String(index + 1).padStart(2, "0")}</span>
             <h2>{step.title}</h2>
             <p>{step.description}</p>

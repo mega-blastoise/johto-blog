@@ -14,7 +14,8 @@
     ],
     "footerTitle": "Prize Map · Competitive Pokémon TCG",
     "footerTagline": "Notes for the next round.",
-    "disclaimer": "Pokémon and Pokémon Trading Card Game are trademarks of their respective owners. Prize Map is an independent fan publication."
+    "disclaimer": "Pokémon and Pokémon Trading Card Game are trademarks of their respective owners. Prize Map is an independent fan publication.",
+    "unownWord": "prize map"
   },
   "meta": {
     "homeTitle": "Prize Map · Competitive Pokémon TCG",
@@ -63,14 +64,17 @@
       "protocolCta": "The protocol",
       "standardLabel": "Every post carries",
       "standard": ["A format boundary", "A versioned decision", "A next test"],
-      "standardFootnote": "Play the room, not the hype."
+      "standardFootnote": "Play the room, not the hype.",
+      "speaker": "Prof. Elm",
+      "hpLabel": "HP"
     },
     "brief": {
       "eyebrow": "Format intelligence",
       "title": "Your field read should have an expiry date.",
       "description": "Prize Map keeps the source window, confidence, and next test visible—so a strong result never disguises a stale conclusion.",
       "latestLabel": "Latest editorial framework · {date}",
-      "checklist": ["Format boundary", "Event evidence", "Deck decision"]
+      "checklist": ["Format boundary", "Event evidence", "Deck decision"],
+      "device": "Pokégear · Radio"
     },
     "featured": {
       "eyebrow": "Selected notes",
@@ -135,12 +139,21 @@
         "title": "Publish the next decision.",
         "description": "The value is what you will test, play, or cut next—not a retrospective victory lap."
       }
-    ]
+    ],
+    "card": {
+      "title": "Trainer Card",
+      "idLabel": "ID No.",
+      "id": "00155",
+      "nameLabel": "Name",
+      "name": "Prize Map",
+      "badgesLabel": "Badges"
+    }
   },
   "notFound": {
     "eyebrow": "404 · Missed the line",
     "title": "That note is not in this deck.",
     "description": "It may have moved, or it has not been published yet.",
-    "cta": "Back to the journal"
+    "cta": "Back to the journal",
+    "unownWord": "lost"
   }
 }

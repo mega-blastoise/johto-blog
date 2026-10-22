@@ -66,7 +66,7 @@ function documentFor(route: string): string {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="${safeDescription}" />
-    <meta name="theme-color" content="#0d1117" />
+    <meta name="theme-color" content="#f3efdc" />
     <title>${safeTitle}</title>
     <link rel="stylesheet" href="/app.css" />
   </head>
