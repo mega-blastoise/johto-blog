@@ -1,5 +1,7 @@
 import { articleKinds } from "@prize-map/types";
 
+import { EnergySymbol } from "@/components/EnergySymbol";
+import { kindEnergy } from "@/components/KindTag";
 import copy from "@/content/en.json";
 import { articleKindLabel } from "@/utils/articlePresentation";
 
@@ -42,10 +44,12 @@ function FilterBarView({
             className={
               kind === item ? "filter-chip filter-chip--active" : "filter-chip"
             }
+            data-kind={item}
             key={item}
             onClick={() => onKindChange(item)}
             type="button"
           >
+            <EnergySymbol type={kindEnergy[item]} />
             {articleKindLabel(item)}
           </button>
         ))}

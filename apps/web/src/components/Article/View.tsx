@@ -3,10 +3,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import { ArticleCard } from "@/components/ArticleCard";
+import { KindTag } from "@/components/KindTag";
 import { NotFoundView } from "@/components/NotFound";
 import copy from "@/content/en.json";
 import {
-  articleKindLabel,
   articlePath,
   formatArticleDate,
   formatLabel,
@@ -23,9 +23,9 @@ function ArticleView({ article, relatedPosts }: ArticleViewProps) {
       <Link className="back-link" to="/posts/">
         <span aria-hidden="true">←</span> {copy.common.backToJournal}
       </Link>
-      <header className="article-detail__header">
+      <header className="article-detail__header" data-kind={article.kind}>
         <div className="article-card__eyebrow">
-          <span className="type-pill">{articleKindLabel(article.kind)}</span>
+          <KindTag kind={article.kind} />
           <time dateTime={article.updated}>
             {formatMessage(copy.common.updated, {
               date: formatArticleDate(article.updated),
@@ -34,25 +34,31 @@ function ArticleView({ article, relatedPosts }: ArticleViewProps) {
         </div>
         <h1>{article.title}</h1>
         <p className="article-detail__deck">{article.excerpt}</p>
-        <div className="article-detail__metadata">
-          <span>
-            {formatMessage(copy.common.format, {
-              format: formatLabel(article),
-            })}
-          </span>
-          <span>
-            {formatMessage(copy.common.published, {
-              date: formatArticleDate(article.date),
-            })}
-          </span>
+        <dl
+          className="article-detail__metadata"
+          aria-label={copy.article.metadataLabel}
+        >
+          <div>
+            <dt>{copy.article.formatLabel}</dt>
+            <dd>{formatLabel(article)}</dd>
+          </div>
+          <div>
+            <dt>{copy.article.published}</dt>
+            <dd>{formatArticleDate(article.date)}</dd>
+          </div>
           {article.deck ? (
-            <span>
-              {formatMessage(copy.common.version, {
-                version: article.deck.version,
-              })}
-            </span>
+            <div>
+              <dt>{copy.article.build}</dt>
+              <dd>{article.deck.version}</dd>
+            </div>
           ) : null}
-        </div>
+          {article.deck?.record ? (
+            <div>
+              <dt>{copy.article.record}</dt>
+              <dd>{article.deck.record}</dd>
+            </div>
+          ) : null}
+        </dl>
       </header>
       <div className="article-detail__body">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -61,7 +67,10 @@ function ArticleView({ article, relatedPosts }: ArticleViewProps) {
       </div>
       <footer className="article-detail__footer">
         <p>
-          {copy.common.filedUnder} <strong>{article.tags.join(" · ")}</strong>
+          {copy.common.filedUnder}{" "}
+          {article.tags.map((tag) => (
+            <strong key={tag}>{tag}</strong>
+          ))}
         </p>
         <Link className="text-link" to={articlePath(article.slug)}>
           {copy.common.permanentLink} <span aria-hidden="true">↗</span>

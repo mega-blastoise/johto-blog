@@ -20,7 +20,7 @@ function PostsView({ posts }: PostsViewProps) {
 
   return (
     <section className="journal" aria-labelledby="journal-title">
-      <div className="section-heading section-heading--journal">
+      <div className="section-heading section-heading--journal section-heading--standings">
         <div>
           <p className="eyebrow">{copy.posts.eyebrow}</p>
           <h1 id="journal-title">{copy.posts.title}</h1>
@@ -38,7 +38,13 @@ function PostsView({ posts }: PostsViewProps) {
         onQueryChange={setQuery}
         query={query}
       />
-      <div className="article-grid" aria-live="polite">
+      <p className="standings-label">
+        <span>{copy.broadcast.standings}</span>
+        {formatMessage(copy.broadcast.standingsCount, {
+          count: matchingPosts.length,
+        })}
+      </p>
+      <div className="article-grid article-grid--standings" aria-live="polite">
         {matchingPosts.map((post) => (
           <ArticleCard article={post} key={post.slug} />
         ))}

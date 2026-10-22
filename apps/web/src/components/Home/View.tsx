@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 import { ArticleCard } from "@/components/ArticleCard";
 import { FormatBrief } from "@/components/FormatBrief";
+import { PrizeTrack } from "@/components/PrizeTrack";
 import copy from "@/content/en.json";
 import { selectHomePosts } from "@/services/Posts";
 import { formatMessage } from "@/utils/formatMessage";
@@ -17,9 +18,10 @@ function HomeView({ posts }: HomeViewProps) {
         <div className="hero__copy">
           <p className="eyebrow">{copy.home.hero.eyebrow}</p>
           <h1 id="home-title">
-            {copy.home.hero.titleFirstLine}
-            <br />
-            {copy.home.hero.titleSecondLine}
+            <span>{copy.home.hero.titleFirstLine}</span>
+            <span className="hero__title-accent">
+              {copy.home.hero.titleSecondLine}
+            </span>
           </h1>
           <p>{copy.home.hero.description}</p>
           <div className="hero__actions">
@@ -32,9 +34,14 @@ function HomeView({ posts }: HomeViewProps) {
           </div>
         </div>
         <div className="hero__card" aria-label={copy.home.hero.standardLabel}>
-          <span className="hero__card-label">
-            {copy.home.hero.standardLabel}
-          </span>
+          <div className="hero__card-header">
+            <span className="hero__card-label">
+              {copy.home.hero.standardLabel}
+            </span>
+            <span className="live-badge">
+              {copy.home.hero.scoreboardStatus}
+            </span>
+          </div>
           <ol>
             {copy.home.hero.standard.map((item, index) => (
               <li key={item}>
@@ -42,6 +49,7 @@ function HomeView({ posts }: HomeViewProps) {
               </li>
             ))}
           </ol>
+          <PrizeTrack taken={copy.home.hero.standard.length} />
           <span className="hero__card-foot">
             {copy.home.hero.standardFootnote}
           </span>

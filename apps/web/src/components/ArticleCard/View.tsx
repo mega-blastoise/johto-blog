@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 
+import { KindTag } from "@/components/KindTag";
 import copy from "@/content/en.json";
 import {
-  articleKindLabel,
   articlePath,
   formatArticleDate,
   formatLabel,
@@ -17,15 +17,19 @@ function ArticleCardView({ article, priority = false }: ArticleCardProps) {
       className={
         priority ? "article-card article-card--priority" : "article-card"
       }
+      data-kind={article.kind}
     >
       <div className="article-card__eyebrow">
-        <span className="type-pill">{articleKindLabel(article.kind)}</span>
+        <KindTag kind={article.kind} />
         <time dateTime={article.updated}>
           {formatMessage(copy.common.updated, {
             date: formatArticleDate(article.updated),
           })}
         </time>
       </div>
+      {priority ? (
+        <p className="article-card__marker">{copy.broadcast.featuredMatch}</p>
+      ) : null}
       <h2>
         <Link to={articlePath(article.slug)}>{article.title}</Link>
       </h2>
@@ -44,6 +48,12 @@ function ArticleCardView({ article, priority = false }: ArticleCardProps) {
             <div>
               <dt>{copy.article.window}</dt>
               <dd>{article.deck.event}</dd>
+            </div>
+          ) : null}
+          {article.deck.record ? (
+            <div>
+              <dt>{copy.article.record}</dt>
+              <dd>{article.deck.record}</dd>
             </div>
           ) : null}
         </dl>

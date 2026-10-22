@@ -14,7 +14,16 @@
     ],
     "footerTitle": "Prize Map · Competitive Pokémon TCG",
     "footerTagline": "Notes for the next round.",
-    "disclaimer": "Pokémon and Pokémon Trading Card Game are trademarks of their respective owners. Prize Map is an independent fan publication."
+    "disclaimer": "Pokémon and Pokémon Trading Card Game are trademarks of their respective owners. Prize Map is an independent fan publication.",
+    "live": "Live",
+    "tickerLabel": "On the desk",
+    "ticker": [
+      "Deck reports",
+      "Meta briefs",
+      "Tournament logs",
+      "Tech notes",
+      "Prize maps"
+    ]
   },
   "meta": {
     "homeTitle": "Prize Map · Competitive Pokémon TCG",
@@ -63,7 +72,8 @@
       "protocolCta": "The protocol",
       "standardLabel": "Every post carries",
       "standard": ["A format boundary", "A versioned decision", "A next test"],
-      "standardFootnote": "Play the room, not the hype."
+      "standardFootnote": "Play the room, not the hype.",
+      "scoreboardStatus": "Live"
     },
     "brief": {
       "eyebrow": "Format intelligence",
@@ -96,7 +106,10 @@
     "build": "Build",
     "deckContextLabel": "Deck report context",
     "formatLabel": "Format",
-    "window": "Window"
+    "window": "Window",
+    "published": "Published",
+    "record": "Record",
+    "metadataLabel": "Post details"
   },
   "field": {
     "eyebrow": "Field notes",
@@ -141,6 +154,21 @@
     "eyebrow": "404 · Missed the line",
     "title": "That note is not in this deck.",
     "description": "It may have moved, or it has not been published yet.",
-    "cta": "Back to the journal"
+    "cta": "Back to the journal",
+    "prizesLabel": "Prize cards remaining"
+  },
+  "broadcast": {
+    "kindSegments": {
+      "deck-report": "Feature",
+      "meta-brief": "Live",
+      "tournament-log": "Top cut",
+      "tech-note": "Tech",
+      "process": "Desk"
+    },
+    "prizesLabel": "{taken} of {total} prize cards taken",
+    "round": "Round {round}",
+    "standings": "Standings",
+    "standingsCount": "{count} on the board",
+    "featuredMatch": "Feature match"
   }
 }
