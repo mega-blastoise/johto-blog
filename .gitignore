@@ -6,3 +6,4 @@ node_modules/
 apps/web/dist/
 packages/*/dist/
 .claude/worktrees/
+/dist/

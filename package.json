@@ -8,14 +8,13 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build && bun run site:stage",
+    "build": "turbo run build",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
     "fmt": "prettier --write . --ignore-unknown",
     "lint": "turbo run lint lint:root",
-    "lint:root": "eslint eslint.config.js scripts",
-    "site:stage": "bun run scripts/stage-site.ts",
+    "lint:root": "eslint eslint.config.js",
     "start": "turbo run start",
     "test": "turbo run test"
   },
