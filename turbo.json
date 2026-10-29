@@ -24,7 +24,7 @@
       "dependsOn": ["^lint"]
     },
     "//#lint:root": {
-      "inputs": ["eslint.config.js", "scripts/**"]
+      "inputs": ["eslint.config.js"]
     },
     "start": {
       "dependsOn": ["^start"],
