@@ -1,110 +1,172 @@
 # AWS production deployment
 
-Prize Map now has a GitHub Actions release workflow and a parameterized AWS CloudFormation template. The workflow builds the root `dist/` directory, syncs it to a private S3 bucket, waits for a CloudFront invalidation, and checks the public URL.
+Prize Map is served from a private S3 bucket behind CloudFront. The AWS resources are created once by hand in the console; GitHub Actions then releases every pushed `v*` tag:
 
-The repository does not currently have a GitHub remote, and no AWS deployment identifiers are recorded here. Those are the only blockers to activating the pipeline.
+1. **Sanity check** — install, build, check types, lint, test (`.github/workflows/sanity-check.yaml`, also run on every branch push and PR).
+2. **Deploy** — assume an IAM role through GitHub OIDC, upload `apps/web/dist` to S3, invalidate CloudFront, then delete stale objects (`.github/workflows/deploy-aws.yaml`).
+3. **Release** — publish a GitHub Release for the tag with generated notes.
 
-## 1. Create or connect the GitHub repository
+No AWS access keys are stored anywhere. The setup below uses these placeholders:
 
-Create the repository under the GitHub owner you want to use, then add it as `origin` and push `main`:
+| Placeholder       | Example                |
+| ----------------- | ---------------------- |
+| `DOMAIN`          | `prizemap.example.com` |
+| `BUCKET`          | `prize-map-production` |
+| `REGION`          | `us-east-1`            |
+| `ACCOUNT_ID`      | `123456789012`         |
+| `DISTRIBUTION_ID` | `E2ABCDEF123456`       |
 
-```bash
-git remote add origin git@github.com:OWNER/prize-map.git
-git push -u origin main
+## 1. Certificate (ACM)
+
+In **ACM, region `us-east-1`** (CloudFront only reads certificates from there, whatever region the bucket is in), request a public certificate for `DOMAIN` and validate it through DNS. If the zone is in Route 53, use **Create records in Route 53**.
+
+## 2. Bucket (S3)
+
+Create `BUCKET` in `REGION` with **Block all public access** on and static website hosting **off**. CloudFront reads it through Origin Access Control, never as a public website.
+
+## 3. Routing function (CloudFront → Functions)
+
+The build writes one `index.html` per route (`/posts/<slug>/index.html`). S3 behind OAC has no index-document behavior, so without this function every deep link except `/` fails.
+
+Create a function named `prize-map-routing`, runtime **cloudfront-js-2.0**, with this code, then **Publish** it:
+
+```js
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+
+  if (uri.endsWith("/")) {
+    request.uri += "index.html";
+  } else if (!uri.split("/").pop().includes(".")) {
+    request.uri += "/index.html";
+  }
+
+  return request;
+}
 ```
 
-Use GitHub’s branch-protection controls to require pull requests or status checks on `main` before enabling production deployments.
+## 4. Distribution (CloudFront)
 
-## 2. Prepare the domain and certificate
+Create a distribution:
 
-Choose the fully qualified production domain, for example `prize-map.example.com`.
+- **Origin:** the `BUCKET` S3 REST endpoint (not the website endpoint), **Origin access: Origin access control settings** with a new OAC (sign requests).
+- **Viewer protocol policy:** Redirect HTTP to HTTPS. **Allowed methods:** GET, HEAD.
+- **Cache policy:** `CachingOptimized`. It honors the `Cache-Control` headers the workflow sets on each object.
+- **Function associations:** Viewer request → CloudFront Functions → `prize-map-routing`.
+- **Alternate domain name:** `DOMAIN`, with the ACM certificate from step 1.
+- **Default root object:** `index.html`.
+- **Price class:** North America and Europe is plenty.
 
-1. Confirm the parent domain has a Route 53 hosted zone and copy its hosted-zone ID.
-2. In **ACM, region `us-east-1`**, request a public certificate for the exact production domain.
-3. Validate the certificate’s DNS record and copy the certificate ARN.
+After it is created, add two **Error pages** so React's not-found page handles unknown routes:
 
-CloudFront requires its ACM certificate in `us-east-1`, even when the S3 bucket is in another region.
+| HTTP error code | Response page path | Response code | Error caching min TTL |
+| --------------- | ------------------ | ------------- | --------------------- |
+| 403             | `/index.html`      | 200           | 0                     |
+| 404             | `/index.html`      | 200           | 0                     |
 
-## 3. Create the GitHub OIDC provider and exact subject
+Then copy the bucket policy CloudFront offers and paste it into **S3 → BUCKET → Permissions → Bucket policy**. It should look like:
 
-The workflow uses short-lived OIDC credentials rather than stored AWS access keys.
-
-Check whether the AWS account already has GitHub’s provider:
-
-```bash
-aws iam list-open-id-connect-providers \
-  --query "OpenIDConnectProviderList[?contains(Arn, 'token.actions.githubusercontent.com')].Arn" \
-  --output text
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": { "Service": "cloudfront.amazonaws.com" },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::BUCKET/*",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:cloudfront::ACCOUNT_ID:distribution/DISTRIBUTION_ID"
+        }
+      }
+    }
+  ]
+}
 ```
 
-If that prints nothing, create it once per AWS account:
+## 5. DNS (Route 53)
 
-```bash
-aws iam create-open-id-connect-provider \
-  --url https://token.actions.githubusercontent.com \
-  --client-id-list sts.amazonaws.com
+In the `DOMAIN` hosted zone, create `A` and `AAAA` records, **Alias → CloudFront distribution**.
+
+## 6. GitHub OIDC role (IAM)
+
+**Identity provider** (once per AWS account): IAM → Identity providers → Add provider → **OpenID Connect**, provider URL `https://token.actions.githubusercontent.com`, audience `sts.amazonaws.com`. Skip this if it already exists.
+
+**Role:** IAM → Roles → Create role → **Web identity**, the provider above, audience `sts.amazonaws.com`. Name it `prize-map-github-deploy` and replace its trust policy with:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          "token.actions.githubusercontent.com:sub": "repo:mega-blastoise/johto-blog:environment:production"
+        }
+      }
+    }
+  ]
+}
 ```
 
-Copy the provider ARN. Next, derive the OIDC subject for the production GitHub Environment. For a repository using GitHub’s immutable subject format, this command constructs the expected value:
+Only jobs running in this repository's `production` environment can assume the role. If the deploy fails with `Not authorized to perform sts:AssumeRoleWithWebIdentity`, the `sub` value is the first thing to check. Repositories opted into GitHub's immutable subject format use `repo:OWNER@OWNER_ID/REPO@REPO_ID:environment:production` instead.
 
-```bash
-gh api repos/OWNER/prize-map \
-  --jq '"repo:\(.owner.login)@\(.owner.id)/\(.name)@\(.id):environment:production"'
+Attach this inline permissions policy (`prize-map-release`):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::BUCKET"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::BUCKET/*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["cloudfront:CreateInvalidation", "cloudfront:GetInvalidation"],
+      "Resource": "arn:aws:cloudfront::ACCOUNT_ID:distribution/DISTRIBUTION_ID"
+    }
+  ]
+}
 ```
 
-For an older repository that has not opted into immutable subjects, use `repo:OWNER/prize-map:environment:production`. Use the exact subject emitted by your repository; do not loosen the IAM trust condition.
+## 7. GitHub `production` environment
 
-## 4. Deploy the CloudFormation stack
+In **GitHub → Settings → Environments**, create `production`:
 
-Choose the S3 region and a globally unique lowercase bucket name. The template creates the private bucket, CloudFront distribution and routing function, Route 53 `A`/`AAAA` aliases, least-privilege GitHub role, and cache policy.
+- **Deployment branches and tags:** Selected branches and tags → add a **tag** rule `v*`. Branch refs cannot deploy.
+- **Environment variables** (configuration, not secrets):
 
-```bash
-aws cloudformation deploy \
-  --region AWS_REGION \
-  --stack-name prize-map-production \
-  --template-file infra/aws-static-site.yaml \
-  --capabilities CAPABILITY_NAMED_IAM \
-  --parameter-overrides \
-    SiteBucketName=UNIQUE_BUCKET_NAME \
-    DomainName=prize-map.example.com \
-    HostedZoneId=ROUTE53_HOSTED_ZONE_ID \
-    AcmCertificateArn=ACM_CERTIFICATE_ARN \
-    GitHubOidcProviderArn=GITHUB_OIDC_PROVIDER_ARN \
-    GitHubOidcSubject='EXACT_GITHUB_OIDC_SUBJECT'
-```
+| Variable                     | Value                                                  |
+| ---------------------------- | ------------------------------------------------------ |
+| `AWS_REGION`                 | `REGION`                                               |
+| `AWS_ROLE_TO_ASSUME`         | `arn:aws:iam::ACCOUNT_ID:role/prize-map-github-deploy` |
+| `S3_BUCKET`                  | `BUCKET`                                               |
+| `CLOUDFRONT_DISTRIBUTION_ID` | `DISTRIBUTION_ID`                                      |
+| `SITE_URL`                   | `https://DOMAIN`                                       |
 
-Read the stack outputs after it completes:
+## 8. Release
 
 ```bash
-aws cloudformation describe-stacks \
-  --region AWS_REGION \
-  --stack-name prize-map-production \
-  --query 'Stacks[0].Outputs' \
-  --output table
+git tag v0.2.0
+git push origin v0.2.0
 ```
 
-The template keeps the bucket if the stack is deleted, protecting published content from an accidental stack deletion.
+Follow it in **Actions → Deploy to AWS**. A release uploads content-hashed files with a one-year immutable `Cache-Control` and the HTML, `app.js`, and `app.css` so browsers always revalidate while CloudFront keeps them until the next invalidation. It waits for the `/*` invalidation, removes objects that are no longer in the build, checks `/`, `/posts/`, and `/about/` on `SITE_URL`, and publishes the GitHub Release.
 
-## 5. Configure the GitHub `production` Environment
+To redeploy an existing version, run **Deploy to AWS** manually and pick the tag under **Use workflow from**.
 
-In **GitHub → repository Settings → Environments**, create `production`. Restrict deployments to `main` and add any reviewer gate you want. Then set these environment variables from the stack outputs:
-
-| Variable | Value |
-| --- | --- |
-| `AWS_REGION` | The stack region |
-| `AWS_ROLE_TO_ASSUME` | `GitHubDeploymentRoleArn` |
-| `S3_BUCKET` | `S3BucketName` |
-| `CLOUDFRONT_DISTRIBUTION_ID` | `CloudFrontDistributionId` |
-| `SITE_URL` | `SiteUrl` |
-
-They are configuration, not credentials; do not add `AWS_ACCESS_KEY_ID` or `AWS_SECRET_ACCESS_KEY`.
-
-## 6. Release and verify
-
-Push to `main`, then open **Actions → Deploy to AWS**. The job must pass type checks, lint, tests, and build before it can deploy. It will publish the artifact, invalidate `/*` in CloudFront, wait for completion, and request `SITE_URL`.
-
-Test a deep link such as `/posts/meta-brief-template/` directly after the first release. The CloudFront Function in the template rewrites trailing-slash requests to the generated `index.html` documents, while 403/404 fallbacks let React handle unknown client routes.
-
-## Current hosting
-
-The existing private Sites deployment remains unchanged until this stack is created and the GitHub workflow completes its first successful AWS release. Do not delete that deployment until the custom domain and deep links have been verified on CloudFront.
+After the first release, open a deep link such as `/posts/meta-brief-template/` directly in a fresh tab to confirm the routing function.

@@ -5,3 +5,5 @@ node_modules/
 .env.local
 apps/web/dist/
 packages/*/dist/
+.claude/worktrees/
+/dist/

@@ -14,15 +14,20 @@ prize-map/
 │   ├── content/             # Strict frontmatter contract and parser
 │   ├── content-data/        # Source Markdown and generated content manifest
 │   └── types/               # Shared public domain types
-├── turbo.json
-└── .openai/hosting.json     # Private Sites deployment identity
+├── .github/workflows/       # Sanity-check CI and tag-driven AWS release
+└── turbo.json
 ```
 
 Every package compiles to `dist/` and exports built JavaScript plus declarations. No consumer resolves package TypeScript source.
 
 ## Production deployment
 
-The GitHub Actions release path deploys the built static artifact through private S3, CloudFront, and Route 53 using short-lived GitHub OIDC credentials. Follow the [AWS production deployment guide](docs/deployment.md) to provision the stack and activate the `production` GitHub Environment.
+Pushing a `v*` tag releases `apps/web/dist` to a private S3 bucket behind CloudFront, using short-lived GitHub OIDC credentials, and publishes a matching GitHub Release. The AWS resources are created by hand in the console; follow the [AWS production deployment guide](docs/deployment.md) to set them up and activate the `production` GitHub Environment.
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
 
 ## Local development
 
