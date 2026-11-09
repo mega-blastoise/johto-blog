@@ -44,7 +44,7 @@ function ArticleCardView({ article, priority = false }: ArticleCardProps) {
           </div>
           {article.deck.event ? (
             <div>
-              <dt>{copy.article.window}</dt>
+              <dt>{copy.article.eventLabel}</dt>
               <dd>{article.deck.event}</dd>
             </div>
           ) : null}
@@ -53,7 +53,7 @@ function ArticleCardView({ article, priority = false }: ArticleCardProps) {
       <footer className="article-card__footer">
         <span>{article.tags.slice(0, 3).join(" · ")}</span>
         <Link className="text-link" to={articlePath(article.slug)}>
-          {copy.common.readNote} <span aria-hidden="true">→</span>
+          {copy.common.readPost} <span aria-hidden="true">→</span>
         </Link>
       </footer>
     </article>

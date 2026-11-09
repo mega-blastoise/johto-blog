@@ -1,0 +1,14 @@
+# Standard rotations. Each one is a stop on the Sets & Rotation timeline.
+# A rotation post links here with `rotation: <season>`.
+#
+#   season:  the season the rotated format belongs to, e.g. 2027
+#   date:    first day the rotated format is in effect
+#   marks:   regulation marks leaving Standard
+#
+# Example (not real data, copy and edit):
+#
+# - season: 2027
+#   date: 2027-04-09
+#   marks: [H]
+
+[]

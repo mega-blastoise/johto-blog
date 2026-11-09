@@ -1,4 +1,6 @@
-import type { Article } from "@prize-map/types";
+import type { Catalog } from "@/services/Catalog";
+
 export interface HomeViewProps {
-  posts: Article[];
+  catalog: Catalog;
+  today: string;
 }

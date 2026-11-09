@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 import { UnownWord } from "@/components/UnownWord";
 import copy from "@/content/en.json";
 
@@ -8,6 +10,9 @@ function FooterView() {
         <UnownWord word={copy.site.unownWord} />
         <strong>{copy.site.footerTitle}</strong>
         <span>{copy.site.footerTagline}</span>
+        <Link className="text-link" to="/about/">
+          {copy.site.footerAbout} <span aria-hidden="true">→</span>
+        </Link>
       </div>
       <p>{copy.site.disclaimer}</p>
     </footer>

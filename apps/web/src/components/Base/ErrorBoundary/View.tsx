@@ -25,7 +25,7 @@ function ErrorBoundaryView({ reset }: ErrorBoundaryViewProps) {
             {copy.common.retry}
           </button>
         ) : null}
-        <Link className="button button--quiet" to="/posts/">
+        <Link className="button button--quiet" to="/journal/">
           {copy.common.backToJournal}
         </Link>
       </div>

@@ -1,4 +1,4 @@
-import { posts } from "@prize-map/content-data";
+import { decks, events, posts, sets } from "@prize-map/content-data";
 import { mkdir } from "node:fs/promises";
 
 import copy from "./src/content/en.json";
@@ -11,42 +11,83 @@ interface PageMetadata {
   description: string;
 }
 
-function metadataFor(route: string): PageMetadata {
-  const slug = /^\/posts\/([^/]+)\/$/u.exec(route)?.[1];
-  const article = slug ? posts.find((post) => post.slug === slug) : undefined;
+function fill(template: string, values: Record<string, string>): string {
+  return template.replace(
+    /\{(\w+)\}/gu,
+    (token, key: string) => values[key] ?? token,
+  );
+}
 
-  if (article) {
-    return {
-      title: `${article.title} · ${copy.site.name}`,
-      description: article.excerpt,
+/** Every static route the site emits, with the <title> and description its HTML shell carries. */
+function routeTable(): Map<string, PageMetadata> {
+  const routes = new Map<string, PageMetadata>([
+    [
+      "/",
+      { title: copy.meta.homeTitle, description: copy.meta.homeDescription },
+    ],
+    [
+      "/decks/",
+      { title: copy.meta.decksTitle, description: copy.meta.decksDescription },
+    ],
+    [
+      "/sets/",
+      { title: copy.meta.setsTitle, description: copy.meta.setsDescription },
+    ],
+    [
+      "/events/",
+      {
+        title: copy.meta.eventsTitle,
+        description: copy.meta.eventsDescription,
+      },
+    ],
+    [
+      "/journal/",
+      {
+        title: copy.meta.journalTitle,
+        description: copy.meta.journalDescription,
+      },
+    ],
+    [
+      "/about/",
+      { title: copy.meta.aboutTitle, description: copy.meta.aboutDescription },
+    ],
+    // Pre-/journal/ URL, redirected client-side.
+    [
+      "/posts/",
+      {
+        title: copy.meta.journalTitle,
+        description: copy.meta.journalDescription,
+      },
+    ],
+  ]);
+
+  for (const post of posts) {
+    const metadata = {
+      title: `${post.title} · ${copy.site.name}`,
+      description: post.excerpt,
     };
+    routes.set(`/journal/${post.slug}/`, metadata);
+    routes.set(`/posts/${post.slug}/`, metadata);
   }
-
-  if (route === "/posts/") {
-    return {
-      title: copy.meta.postsTitle,
-      description: copy.meta.postsDescription,
-    };
+  for (const deck of decks) {
+    routes.set(`/decks/${deck.slug}/`, {
+      title: fill(copy.meta.deckTitle, { name: deck.name }),
+      description: fill(copy.meta.deckDescription, { name: deck.name }),
+    });
   }
-
-  if (route === "/field/") {
-    return {
-      title: copy.meta.fieldTitle,
-      description: copy.meta.fieldDescription,
-    };
+  for (const set of sets) {
+    routes.set(`/sets/${set.code.toLowerCase()}/`, {
+      title: fill(copy.meta.setTitle, { name: set.name, code: set.code }),
+      description: fill(copy.meta.setDescription, { name: set.name }),
+    });
   }
-
-  if (route === "/about/") {
-    return {
-      title: copy.meta.protocolTitle,
-      description: copy.meta.protocolDescription,
-    };
+  for (const event of events) {
+    routes.set(`/events/${event.slug}/`, {
+      title: fill(copy.meta.eventTitle, { name: event.name }),
+      description: fill(copy.meta.eventDescription, { name: event.name }),
+    });
   }
-
-  return {
-    title: copy.meta.homeTitle,
-    description: copy.meta.homeDescription,
-  };
+  return routes;
 }
 
 function escapeHtml(value: string): string {
@@ -56,8 +97,7 @@ function escapeHtml(value: string): string {
     .replaceAll("<", "&lt;");
 }
 
-function documentFor(route: string): string {
-  const { description, title } = metadataFor(route);
+function documentFor({ description, title }: PageMetadata): string {
   const safeDescription = escapeHtml(description);
   const safeTitle = escapeHtml(title);
   return `<!doctype html>
@@ -99,15 +139,9 @@ async function build(): Promise<void> {
     throw new AggregateError(result.logs, "Web bundle failed");
   }
 
-  const routes = [
-    "/",
-    "/posts/",
-    "/field/",
-    "/about/",
-    ...posts.map((post) => `/posts/${post.slug}/`),
-  ];
+  const routes = routeTable();
   await Promise.all(
-    routes.map(async (route) => {
+    [...routes].map(async ([route, metadata]) => {
       const outputPath =
         route === "/"
           ? `${outputDirectory}/index.html`
@@ -115,11 +149,11 @@ async function build(): Promise<void> {
       await mkdir(outputPath.slice(0, outputPath.lastIndexOf("/")), {
         recursive: true,
       });
-      await Bun.write(outputPath, documentFor(route));
+      await Bun.write(outputPath, documentFor(metadata));
     }),
   );
 
-  console.info(`Built static Prize Map with ${routes.length} routes.`);
+  console.info(`Built static Prize Map with ${routes.size} routes.`);
 }
 
 await build();

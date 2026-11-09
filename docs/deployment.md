@@ -26,7 +26,7 @@ Create `BUCKET` in `REGION` with **Block all public access** on and static websi
 
 ## 3. Routing function (CloudFront → Functions)
 
-The build writes one `index.html` per route (`/posts/<slug>/index.html`). S3 behind OAC has no index-document behavior, so without this function every deep link except `/` fails.
+The build writes one `index.html` per route (`/journal/<slug>/index.html`, `/decks/<slug>/index.html`, …). S3 behind OAC has no index-document behavior, so without this function every deep link except `/` fails.
 
 Create a function named `prize-map-routing`, runtime **cloudfront-js-2.0**, with this code, then **Publish** it:
 
@@ -165,8 +165,8 @@ git tag v0.2.0
 git push origin v0.2.0
 ```
 
-Follow it in **Actions → Deploy to AWS**. A release uploads content-hashed files with a one-year immutable `Cache-Control` and the HTML, `app.js`, and `app.css` so browsers always revalidate while CloudFront keeps them until the next invalidation. It waits for the `/*` invalidation, removes objects that are no longer in the build, checks `/`, `/posts/`, and `/about/` on `SITE_URL`, and publishes the GitHub Release.
+Follow it in **Actions → Deploy to AWS**. A release uploads content-hashed files with a one-year immutable `Cache-Control` and the HTML, `app.js`, and `app.css` so browsers always revalidate while CloudFront keeps them until the next invalidation. It waits for the `/*` invalidation, removes objects that are no longer in the build, checks `/`, `/decks/`, `/sets/`, `/events/`, `/journal/`, and `/about/` on `SITE_URL`, and publishes the GitHub Release.
 
 To redeploy an existing version, run **Deploy to AWS** manually and pick the tag under **Use workflow from**.
 
-After the first release, open a deep link such as `/posts/meta-brief-template/` directly in a fresh tab to confirm the routing function.
+After the first release, open a deep link such as `/journal/deck-build-template/` directly in a fresh tab to confirm the routing function.

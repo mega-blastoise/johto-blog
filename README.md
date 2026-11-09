@@ -1,8 +1,19 @@
 # Prize Map
 
-> A competitive Pokémon Trading Card Game journal for deck reports, matchup plans, and timestamped format reads.
+> Competitive Pokémon Trading Card Game deck builds, set and rotation reads, and tournament prep.
 
-Prize Map is a small, static, Markdown-first site for players who need their testing notes to remain useful after the event. It deliberately starts with authoring templates rather than unverified claims about a live format.
+Prize Map is a small, static, Markdown-first site organized around the decks. Every archetype has a Deck Dex page with its current list, matchups and build history. Set releases and rotation sit on one timeline, and the calendar tracks upcoming Regionals and Cups. It starts with authoring templates rather than unverified claims about a live format.
+
+## Site map
+
+| Route                             | What's there                                                                  |
+| --------------------------------- | ----------------------------------------------------------------------------- |
+| `/`                               | Top decks, the current format, latest posts, upcoming events                  |
+| `/decks/` · `/decks/<archetype>/` | Deck Dex, and one entry per archetype built from its newest `deck-build` post |
+| `/sets/` · `/sets/<code>/`        | Sets & Rotation timeline, set releases, rotation guides                       |
+| `/events/` · `/events/<slug>/`    | Upcoming and past events, previews and reports                                |
+| `/journal/` · `/journal/<slug>/`  | Every post, searchable. Old `/posts/…` links redirect here                    |
+| `/about/`                         | About Prize Map                                                               |
 
 ## Structure
 
@@ -46,35 +57,54 @@ bun run test
 bun run build
 ```
 
-## Authoring a post
+## Authoring
 
-Create a Markdown file in `packages/content-data/posts/`. Frontmatter is validated during every build, including unknown-key detection—an accidental typo does not silently reach the site.
+Content lives in `packages/content-data/`:
+
+```
+posts/            # Markdown posts, one per file
+data/decks.yaml   # Deck Dex archetypes (slug, name, optional tier 1-3)
+data/sets.yaml    # Sets with release and tournament-legal dates
+data/rotations.yaml
+data/events.yaml  # The tournament calendar
+```
+
+Frontmatter is validated during every build, including unknown-key detection, so a typo never silently reaches the site. Cross-references are checked too: a deck slug, set code, rotation season or event slug that isn't in `data/` fails the build.
+
+`kind` is one of `deck-build`, `set-release`, `rotation`, or `event`. Copy the matching `*-template.md` post to start.
+
+### Deck builds
 
 ```md
 ---
-title: Your report title
-slug: your-report-title
+title: "Dragapult ex v4: built for a Gardevoir room"
+slug: dragapult-ex-v4
 excerpt: The decision this post helps a player make.
-date: 2026-10-12
-updated: 2026-10-12
-kind: deck-report
+date: 2026-11-02
+updated: 2026-11-02
+kind: deck-build
 format: standard
-tags: [testing, deck-report]
-featured: false
-visible: true
+tags: [dragapult]
 deck:
-  archetype: Your archetype
-  version: v1.3
-  event: League Cup testing
-  record: 7-2
+  archetype: dragapult-ex # slug in data/decks.yaml
+  version: v4
+  event: League Cup testing # optional
+  record: 7-2 # optional
+matchups: # optional, each vs is a deck slug
+  - vs: gardevoir-ex
+    result: favored # favored | even | unfavored
+    note: Spread takes Kirlia before it evolves.
+counters: [gholdengo-ex] # optional deck slugs
 ---
-
-## The deck's job
-
-Write the article here.
 ```
 
-`kind` is one of `deck-report`, `meta-brief`, `tournament-log`, `tech-note`, or `process`. The starter templates model a concise way to write reports without pretending that a metagame conclusion is current forever.
+Every deck build contains exactly one fenced `decklist` block holding a PTCG Live export pasted as is. The build checks that each section adds up and the deck is exactly 60 cards, and the page renders the list with a **Copy for Live** button.
+
+The newest `deck-build` post for an archetype becomes its Deck Dex entry. Publish a new post for a new version so older lists stay in the build history. A build is flagged as possibly out of date once a set in `data/sets.yaml` becomes legal after its `updated` date.
+
+### Sets, rotation and events
+
+Link a `set-release` post to a set with `set: <code>`, a `rotation` post with `rotation: <season>`, and an `event` post with `event: <slug>`. Each field is only allowed on its own kind.
 
 ## Editorial rule
 

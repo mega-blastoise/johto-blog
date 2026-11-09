@@ -1,0 +1,21 @@
+# Card sets, in any order (the build sorts them by legal date).
+#
+# This file drives the Sets & Rotation timeline, /sets/<code>/ pages, the
+# current-format strip on the home page, and the "written before <set> was
+# legal" warning on older deck builds.
+#
+#   code:            PTCG Live set code, uppercase (the build rejects lowercase)
+#   name:            full set name
+#   released:        street date
+#   legal:           first day the set is tournament legal
+#   regulationMark:  optional single letter printed on the cards
+#
+# Example (not real data, copy and edit):
+#
+# - code: ABC
+#   name: Example Expansion
+#   released: 2026-11-07
+#   legal: 2026-11-21
+#   regulationMark: J
+
+[]

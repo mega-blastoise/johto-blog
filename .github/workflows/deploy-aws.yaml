@@ -108,7 +108,7 @@ jobs:
         env:
           SITE_URL: ${{ vars.SITE_URL }}
         run: |
-          for route in / /posts/ /about/; do
+          for route in / /decks/ /sets/ /events/ /journal/ /about/; do
             curl --fail --location --retry 5 --retry-all-errors --retry-delay 5 \
               --silent --show-error --output /dev/null \
               "${SITE_URL%/}${route}"

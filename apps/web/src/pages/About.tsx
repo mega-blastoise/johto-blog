@@ -1,10 +1,10 @@
 import { memo } from "react";
 
-import { Protocol } from "@/components/Protocol";
+import { About } from "@/components/About";
 import { pipeline } from "@/utils/pipeline";
 
 function AboutPage() {
-  return <Protocol />;
+  return <About />;
 }
 
 export default pipeline(memo)(AboutPage);

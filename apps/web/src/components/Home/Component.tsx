@@ -1,7 +1,8 @@
 import { memo } from "react";
 
 import { SuspenseEnabledQuery } from "@/components/Base/SEQ";
-import { useGetPosts } from "@/hooks/usePosts";
+import { useGetCatalog } from "@/hooks/useCatalog";
+import { todayIso } from "@/utils/dates";
 import { pipeline } from "@/utils/pipeline";
 
 import HomeView from "./View";
@@ -15,8 +16,8 @@ function Home() {
 }
 
 function HomeData() {
-  const postsQuery = useGetPosts();
-  return <HomeView posts={postsQuery.data} />;
+  const catalogQuery = useGetCatalog();
+  return <HomeView catalog={catalogQuery.data} today={todayIso()} />;
 }
 
 export default pipeline(memo)(Home);

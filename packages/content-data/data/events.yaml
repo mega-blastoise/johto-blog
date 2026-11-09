@@ -1,0 +1,24 @@
+# The tournament calendar. Upcoming events show on the home page and /events/.
+# An event preview or report post links here with `event: <slug>`.
+#
+#   slug:      URL-safe id, used at /events/<slug>/
+#   name:      e.g. "Example City Regional Championships"
+#   tier:      league-challenge | league-cup | special-event | regional |
+#              international | worlds
+#   starts:    first day
+#   ends:      optional last day
+#   format:    standard | expanded
+#   location:  city, region
+#   url:       optional link to the official listing
+#
+# Example (not real data, copy and edit):
+#
+# - slug: example-regional-2026
+#   name: Example City Regional Championships
+#   tier: regional
+#   starts: 2026-11-14
+#   ends: 2026-11-16
+#   format: standard
+#   location: Example City, ST
+
+[]

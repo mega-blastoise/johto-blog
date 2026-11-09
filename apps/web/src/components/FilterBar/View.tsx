@@ -14,18 +14,18 @@ function FilterBarView({
   return (
     <div className="filter-bar">
       <label className="search-field">
-        <span className="sr-only">{copy.posts.searchLabel}</span>
+        <span className="sr-only">{copy.journal.searchLabel}</span>
         <svg aria-hidden="true" viewBox="0 0 24 24">
           <path d="m20 20-4.35-4.35m1.35-5.15a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" />
         </svg>
         <input
           onChange={(event) => onQueryChange(event.target.value)}
-          placeholder={copy.posts.searchPlaceholder}
+          placeholder={copy.journal.searchPlaceholder}
           type="search"
           value={query}
         />
       </label>
-      <div className="kind-filter" aria-label={copy.posts.filterLabel}>
+      <div className="kind-filter" aria-label={copy.journal.filterLabel}>
         <button
           aria-pressed={kind === "all"}
           className={
@@ -34,7 +34,7 @@ function FilterBarView({
           onClick={() => onKindChange("all")}
           type="button"
         >
-          {copy.posts.allKinds}
+          {copy.journal.allKinds}
         </button>
         {articleKinds.map((item) => (
           <button

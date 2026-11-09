@@ -13,7 +13,7 @@ function NotFoundView() {
       <DialogueBox className="page-intro__dialogue">
         <p>{copy.notFound.description}</p>
       </DialogueBox>
-      <Link className="button button--primary" to="/posts/">
+      <Link className="button button--primary" to="/journal/">
         {copy.notFound.cta} <span aria-hidden="true">→</span>
       </Link>
     </section>

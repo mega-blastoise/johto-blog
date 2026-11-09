@@ -4,42 +4,47 @@ import { filterPosts, selectRelatedArticles } from "./selectors";
 
 import type { Article } from "@prize-map/types";
 
+const base = {
+  counters: [],
+  featured: false,
+  format: "standard",
+  matchups: [],
+  visible: true,
+} as const;
+
 const posts: Article[] = [
   {
+    ...base,
     body: "Alpha body",
     date: "2026-10-01",
+    deck: { archetype: "alpha", version: "v1" },
     excerpt: "Alpha excerpt",
-    featured: false,
-    format: "standard",
-    kind: "deck-report",
+    kind: "deck-build",
     slug: "alpha",
     tags: ["testing", "alpha"],
-    title: "Alpha report",
+    title: "Alpha build",
     updated: "2026-10-01",
-    visible: true,
   },
   {
+    ...base,
     body: "Beta body",
     date: "2026-10-02",
     excerpt: "Beta excerpt",
-    featured: false,
-    format: "standard",
-    kind: "meta-brief",
+    kind: "set-release",
     slug: "beta",
     tags: ["testing", "beta"],
-    title: "Beta brief",
+    title: "Beta set watch",
     updated: "2026-10-02",
-    visible: true,
   },
 ];
 
 test("filters the journal by text and article kind", () => {
-  expect(filterPosts(posts, "brief", "all").map((post) => post.slug)).toEqual([
-    "beta",
-  ]);
   expect(
-    filterPosts(posts, "", "deck-report").map((post) => post.slug),
-  ).toEqual(["alpha"]);
+    filterPosts(posts, "set watch", "all").map((post) => post.slug),
+  ).toEqual(["beta"]);
+  expect(filterPosts(posts, "", "deck-build").map((post) => post.slug)).toEqual(
+    ["alpha"],
+  );
 });
 
 test("ranks related articles by shared editorial tags", () => {

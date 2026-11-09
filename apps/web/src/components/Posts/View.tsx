@@ -22,14 +22,14 @@ function PostsView({ posts }: PostsViewProps) {
     <section className="journal" aria-labelledby="journal-title">
       <div className="section-heading section-heading--journal">
         <div>
-          <p className="eyebrow">{copy.posts.eyebrow}</p>
-          <h1 id="journal-title">{copy.posts.title}</h1>
+          <p className="eyebrow">{copy.journal.eyebrow}</p>
+          <h1 id="journal-title">{copy.journal.title}</h1>
           <p className="section-heading__description">
-            {copy.posts.description}
+            {copy.journal.description}
           </p>
         </div>
         <p className="section-heading__aside">
-          {formatMessage(copy.posts.archiveDetail, { count: posts.length })}
+          {formatMessage(copy.journal.archiveDetail, { count: posts.length })}
         </p>
       </div>
       <FilterBar
@@ -44,7 +44,7 @@ function PostsView({ posts }: PostsViewProps) {
         ))}
       </div>
       {matchingPosts.length === 0 ? (
-        <p className="empty-state">{copy.posts.emptyState}</p>
+        <p className="empty-state">{copy.journal.emptyState}</p>
       ) : null}
     </section>
   );

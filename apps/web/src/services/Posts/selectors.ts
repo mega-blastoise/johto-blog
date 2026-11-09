@@ -9,7 +9,6 @@ export function sortArticles(posts: readonly Article[]): Article[] {
 export function selectHomePosts(posts: readonly Article[]): {
   featuredPosts: Article[];
   recentPosts: Article[];
-  latestBrief?: Article;
 } {
   const sortedPosts = sortArticles(posts);
   const featuredPosts = sortedPosts.filter((post) => post.featured).slice(0, 3);
@@ -20,7 +19,6 @@ export function selectHomePosts(posts: readonly Article[]): {
     recentPosts: sortedPosts
       .filter((post) => !featuredSlugs.has(post.slug))
       .slice(0, 3),
-    latestBrief: sortedPosts.find((post) => post.kind === "meta-brief"),
   };
 }
 

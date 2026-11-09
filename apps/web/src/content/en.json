@@ -7,28 +7,39 @@
     "skipToContent": "Skip to content",
     "navigationLabel": "Primary navigation",
     "navigation": [
-      { "href": "/", "label": "Home" },
-      { "href": "/posts/", "label": "Journal" },
-      { "href": "/field/", "label": "Field Notes" },
-      { "href": "/about/", "label": "Protocol" }
+      { "href": "/decks/", "label": "Decks" },
+      { "href": "/sets/", "label": "Sets & Rotation" },
+      { "href": "/events/", "label": "Events" },
+      { "href": "/journal/", "label": "Journal" }
     ],
     "footerTitle": "Prize Map · Competitive Pokémon TCG",
-    "footerTagline": "Notes for the next round.",
+    "footerTagline": "Deck builds, set reads and tournament prep.",
+    "footerAbout": "About Prize Map",
     "disclaimer": "Pokémon and Pokémon Trading Card Game are trademarks of their respective owners. Prize Map is an independent fan publication.",
     "unownWord": "prize map"
   },
   "meta": {
     "homeTitle": "Prize Map · Competitive Pokémon TCG",
-    "homeDescription": "Deck reports, matchup plans, and format reads for competitive Pokémon Trading Card Game players.",
-    "postsTitle": "Journal · Prize Map",
-    "postsDescription": "Versioned deck reports and source-aware format reads for competitive Pokémon TCG players.",
-    "fieldTitle": "Field Notes · Prize Map",
-    "fieldDescription": "Timestamped competitive Pokémon TCG metagame reads and deck-selection implications.",
-    "protocolTitle": "The Prize Map Protocol",
-    "protocolDescription": "How Prize Map keeps competitive Pokémon TCG notes useful after the event."
+    "homeDescription": "Complete deck builds with matchup plans, reads on new sets and rotation, and prep for upcoming Regionals and Cups.",
+    "decksTitle": "Deck Dex · Prize Map",
+    "decksDescription": "Every competitive Pokémon TCG archetype Prize Map covers, each with its current list, matchups and build history.",
+    "deckTitle": "{name} deck · Prize Map",
+    "deckDescription": "Current list, matchups, counters and build history for {name}.",
+    "setsTitle": "Sets & Rotation · Prize Map",
+    "setsDescription": "Pokémon TCG set releases and Standard rotation on one timeline, with the posts that cover them.",
+    "setTitle": "{name} ({code}) · Prize Map",
+    "setDescription": "What {name} changes in competitive Pokémon TCG.",
+    "eventsTitle": "Events · Prize Map",
+    "eventsDescription": "Upcoming Pokémon TCG Regionals, League Cups and championships, with previews and reports.",
+    "eventTitle": "{name} · Prize Map",
+    "eventDescription": "Prep and reports for {name}.",
+    "journalTitle": "Journal · Prize Map",
+    "journalDescription": "Every Prize Map deck build, set release, rotation guide and event post.",
+    "aboutTitle": "About · Prize Map",
+    "aboutDescription": "How Prize Map writes about competitive Pokémon TCG."
   },
   "common": {
-    "readNote": "Read note",
+    "readPost": "Read post",
     "backToJournal": "Journal",
     "permanentLink": "Permanent link",
     "updated": "Updated {date}",
@@ -36,108 +47,218 @@
     "format": "Format: {format}",
     "version": "Version: {version}",
     "filedUnder": "Filed under",
-    "loading": "Loading the next note…",
+    "loading": "Loading…",
     "retry": "Try again",
     "errorEyebrow": "Read interrupted",
-    "errorTitle": "The field report could not load.",
-    "errorDescription": "The content is still intact. Reload this view or return to the journal."
+    "errorTitle": "This page could not load.",
+    "errorDescription": "The content is still intact. Reload this view or return to the journal.",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "daysAway": "In {count} days",
+    "happeningNow": "Happening now",
+    "postsEmpty": "Nothing published here yet."
   },
   "articleKinds": {
-    "deck-report": "Deck report",
-    "meta-brief": "Meta brief",
-    "tournament-log": "Tournament log",
-    "tech-note": "Tech note",
-    "process": "Process"
+    "deck-build": "Deck build",
+    "set-release": "Set release",
+    "rotation": "Rotation",
+    "event": "Event"
   },
   "formats": {
     "standard": "Standard",
     "expanded": "Expanded",
     "mixed": "Mixed"
   },
-  "home": {
-    "hero": {
-      "eyebrow": "Competitive Pokémon TCG journal",
-      "titleFirstLine": "Better notes.",
-      "titleSecondLine": "Cleaner decisions.",
-      "description": "A tightly kept record of deck versions, matchup plans, and format reads for players who want their testing to survive contact with a tournament room.",
-      "journalCta": "Read the journal",
-      "protocolCta": "The protocol",
-      "standardLabel": "Every post carries",
-      "standard": ["A format boundary", "A versioned decision", "A next test"],
-      "standardFootnote": "Play the room, not the hype.",
-      "speaker": "Prof. Elm",
-      "hpLabel": "HP"
-    },
-    "brief": {
-      "eyebrow": "Format intelligence",
-      "title": "Your field read should have an expiry date.",
-      "description": "Prize Map keeps the source window, confidence, and next test visible—so a strong result never disguises a stale conclusion.",
-      "latestLabel": "Latest editorial framework · {date}",
-      "checklist": ["Format boundary", "Event evidence", "Deck decision"],
-      "device": "Pokégear · Radio"
-    },
-    "featured": {
-      "eyebrow": "Selected notes",
-      "title": "Decks, field reads, and the decisions behind them.",
-      "archiveCta": "Browse every note",
-      "recentTitle": "Recent notes"
+  "eventTiers": {
+    "league-challenge": "League Challenge",
+    "league-cup": "League Cup",
+    "special-event": "Special Event",
+    "regional": "Regional",
+    "international": "International",
+    "worlds": "Worlds"
+  },
+  "matchups": {
+    "title": "Matchups",
+    "countersTitle": "Countered by",
+    "empty": "No matchups recorded for this build.",
+    "results": {
+      "favored": { "label": "Favored", "text": "It's super effective!" },
+      "even": { "label": "Even", "text": "It's an even fight." },
+      "unfavored": { "label": "Unfavored", "text": "It's not very effective…" }
     }
   },
-  "posts": {
+  "decklist": {
+    "title": "Full list",
+    "copy": "Copy for Live",
+    "copied": "Copied",
+    "copyFailed": "Select the list to copy it",
+    "exportLabel": "PTCG Live export",
+    "total": "{count} cards",
+    "sections": {
+      "pokemon": "Pokémon",
+      "trainer": "Trainer",
+      "energy": "Energy"
+    }
+  },
+  "stale": "Written before {set} became legal on {date}. This list may be out of date.",
+  "home": {
+    "hero": {
+      "eyebrow": "Competitive Pokémon TCG",
+      "titleFirstLine": "Complete lists.",
+      "titleSecondLine": "Clear game plans.",
+      "description": "Prize Map publishes full 60-card deck builds with strategy, play patterns and matchups, plus reads on new sets, rotation and upcoming Regionals and Cups.",
+      "decksCta": "Open the Deck Dex",
+      "eventsCta": "Upcoming events",
+      "speaker": "Prof. Elm",
+      "topDecksLabel": "Top decks",
+      "topDecksEmpty": "No builds posted yet.",
+      "topDecksFoot": "Tier read · updated with each build",
+      "hpLabel": "HP"
+    },
+    "format": {
+      "device": "Pokégear · Radio",
+      "eyebrow": "Current format",
+      "formatName": "Standard",
+      "currentSetLabel": "Newest legal set",
+      "nextSetLabel": "Next set",
+      "nextEventLabel": "Next event",
+      "noSet": "No set dates on file",
+      "noNextSet": "None announced",
+      "noEvent": "Nothing on the calendar",
+      "legalSince": "Legal since {date}",
+      "legalOn": "Legal {date}",
+      "setsCta": "Sets & Rotation"
+    },
+    "latest": {
+      "eyebrow": "Latest writing",
+      "title": "New builds, set reads and event prep.",
+      "archiveCta": "Browse the journal",
+      "recentTitle": "More recent posts"
+    },
+    "events": {
+      "eyebrow": "On the calendar",
+      "title": "Upcoming events",
+      "cta": "Full calendar"
+    }
+  },
+  "decks": {
+    "eyebrow": "Deck Dex",
+    "title": "Every archetype, one page each.",
+    "description": "Each entry holds the current list, the matchup table and every earlier version. Builds are dated, so you always know which format a list was written for.",
+    "number": "No. {number}",
+    "tier": "Tier {tier}",
+    "untiered": "Unranked",
+    "unwritten": "Not built yet",
+    "stale": "Built before {code}",
+    "latest": "{version} · {date}",
+    "count": "{written} of {total} decks built"
+  },
+  "deck": {
+    "backToDex": "Deck Dex",
+    "currentBuild": "Current build",
+    "readBuild": "Read the full {version} build",
+    "record": "Record",
+    "event": "Event",
+    "version": "Version",
+    "updated": "Updated",
+    "history": "Build history",
+    "otherSide": "From the other side",
+    "otherSideDescription": "How builds of other decks rate against this one.",
+    "unwrittenTitle": "No build posted for this deck yet.",
+    "unwrittenDescription": "It's in the Dex because another build lists it as a matchup or counter."
+  },
+  "sets": {
+    "eyebrow": "Sets & Rotation",
+    "title": "What's legal, and what's changing.",
+    "description": "Every set release and Standard rotation on one timeline, with the posts that cover them.",
+    "mapLabel": "Pokégear map",
+    "mapEmpty": "The timeline fills in as set and rotation dates are added.",
+    "today": "Today",
+    "setsTitle": "Set releases",
+    "setsEmpty": "No set dates on file yet.",
+    "setPostsTitle": "Set reads",
+    "rotationPostsTitle": "Rotation guides",
+    "rotationStop": "{season} rotation",
+    "rotationOut": "{marks} leave",
+    "rotationMarks": "Marks {marks} leave Standard on {date}",
+    "legal": "Legal {date}",
+    "released": "Released {date}",
+    "mark": "Mark {mark}",
+    "postCount": "{count} posts"
+  },
+  "set": {
+    "backToSets": "Sets & Rotation",
+    "code": "Set code",
+    "released": "Released",
+    "legal": "Tournament legal",
+    "mark": "Regulation mark",
+    "statusLegal": "Legal since {date}",
+    "statusUpcoming": "Legal from {date}",
+    "postsTitle": "Posts about this set",
+    "affectedTitle": "Builds written before this set",
+    "affectedDescription": "These decks' latest lists predate {name}. Check them against the new cards."
+  },
+  "events": {
+    "eyebrow": "Events",
+    "title": "Regionals, Cups and the road to Worlds.",
+    "description": "The tournaments Prize Map is preparing for, with previews before and reports after.",
+    "upcomingTitle": "Upcoming",
+    "upcomingEmpty": "No events on the calendar yet.",
+    "pastTitle": "Past events",
+    "postsTitle": "Previews and reports"
+  },
+  "event": {
+    "backToEvents": "Events",
+    "dates": "Dates",
+    "location": "Location",
+    "format": "Format",
+    "tier": "Tier",
+    "legalSet": "Newest legal set",
+    "noLegalSet": "Not on file",
+    "officialLink": "Official listing",
+    "postsTitle": "Prep and reports"
+  },
+  "journal": {
     "eyebrow": "The journal",
-    "title": "Decks, field reads, and the decisions behind them.",
-    "description": "A searchable archive of versioned reports and source-aware format reads.",
-    "searchLabel": "Search notes",
-    "searchPlaceholder": "Search notes",
+    "title": "Everything Prize Map has published.",
+    "description": "Deck builds, set releases, rotation guides and event prep, newest first.",
+    "searchLabel": "Search posts",
+    "searchPlaceholder": "Search posts",
     "filterLabel": "Filter posts by type",
     "allKinds": "All",
-    "archiveDetail": "{count} authored notes · markdown-first · versioned",
-    "emptyState": "No notes match that field read. Reset the filters and try another term."
+    "archiveDetail": "{count} posts",
+    "emptyState": "No posts match. Reset the filters and try another term."
   },
   "article": {
     "relatedEyebrow": "Keep preparing",
-    "relatedTitle": "Related notes",
+    "relatedTitle": "Related posts",
     "build": "Build",
-    "deckContextLabel": "Deck report context",
+    "deckContextLabel": "Deck build context",
     "formatLabel": "Format",
-    "window": "Window"
+    "eventLabel": "Event",
+    "atAGlance": "At a glance",
+    "deckEntry": "Deck Dex entry",
+    "writtenWith": "Newest legal set: {set}",
+    "setLink": "Set: {name}",
+    "eventLink": "Event: {name}",
+    "rotationLink": "{season} rotation"
   },
-  "field": {
-    "eyebrow": "Field notes",
-    "title": "A format read is a timestamped argument.",
-    "description": "This page is reserved for live, source-backed meta snapshots. The starter workspace deliberately makes no unverified claim about today’s Standard field—competitive information needs a source window before it needs a hot take.",
-    "steps": [
-      {
-        "title": "Snapshot",
-        "description": "Record the format, events observed, sample window, and update date."
-      },
-      {
-        "title": "Read",
-        "description": "Separate results you saw from the decision you infer from them."
-      },
-      {
-        "title": "Action",
-        "description": "End with the deck, tech, or matchup test the field read changes."
-      }
-    ],
-    "templateCta": "Open the meta brief template"
-  },
-  "protocol": {
-    "eyebrow": "The protocol",
-    "title": "Make a competitive journal that remains useful after the event.",
-    "description": "Prize Map is a static, Markdown-authored publishing system for a serious Pokémon Trading Card Game player. It is built to preserve list versions, timestamp metagame observations, and turn testing into advice that can be checked later.",
+  "about": {
+    "eyebrow": "About",
+    "title": "A competitive Pokémon TCG site built around the decks.",
+    "description": "Prize Map is written by a competitive player for players getting ready for their next event. Most posts are deck builds. The rest cover what changes the format: new sets, rotation, and the Regionals and Cups coming up.",
     "principles": [
       {
-        "title": "Own the source.",
-        "description": "Posts live as validated Markdown in the repository, not as opaque CMS records."
+        "title": "Every build is complete.",
+        "description": "Each deck post has the full 60, the strategy, the play patterns, the matchups it wins and the decks that beat it."
       },
       {
-        "title": "Keep the conditions.",
-        "description": "Format, date, deck version, and confidence are first-class editorial context."
+        "title": "Every claim is dated.",
+        "description": "Posts carry the newest legal set when they were written, and older builds are flagged when a new set lands."
       },
       {
-        "title": "Publish the next decision.",
-        "description": "The value is what you will test, play, or cut next—not a retrospective victory lap."
+        "title": "Every post ends with a decision.",
+        "description": "What to register, what to test, or what to cut. A verdict you can act on before the next round."
       }
     ],
     "card": {
@@ -151,7 +272,7 @@
   },
   "notFound": {
     "eyebrow": "404 · Missed the line",
-    "title": "That note is not in this deck.",
+    "title": "That page is not in this deck.",
     "description": "It may have moved, or it has not been published yet.",
     "cta": "Back to the journal",
     "unownWord": "lost"

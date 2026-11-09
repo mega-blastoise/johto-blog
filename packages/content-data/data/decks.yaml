@@ -1,0 +1,23 @@
+# The Deck Dex: every archetype a post can name.
+#
+# A deck-build post points here with `deck.archetype`, and matchups/counters
+# reference these slugs, so the build fails on a typo instead of shipping a dead
+# link. An entry with no deck-build post yet shows in the Dex as "not yet built".
+#
+#   slug:  URL-safe id, used at /decks/<slug>/
+#   name:  display name, e.g. "Dragapult ex"
+#   tier:  optional 1 | 2 | 3, your current read. Orders the Dex and the home page.
+#
+# The three entries below back the template post. Replace them with real decks.
+
+- slug: template-deck
+  name: "[Your archetype]"
+  tier: 1
+
+- slug: template-favored
+  name: "[A deck you beat]"
+  tier: 2
+
+- slug: template-counter
+  name: "[A deck that beats you]"
+  tier: 2
